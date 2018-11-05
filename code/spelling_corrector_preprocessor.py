@@ -33,6 +33,12 @@ for path, subdirs, files in os.walk(old_path):
         a = os.path.join(file)
         file_list.append(a)
 
+new_file_list = []
+for path, subdirs, files in os.walk(new_path): 
+    for file in files:
+        a = os.path.join(file)
+        new_file_list.append(a)
+
 # Spelling Corrector Borrowed from Peter Norvig http://norvig.com/spell-correct.html. Thank you!
 
 def words(text): return re.findall(r'\w+', text.lower())
@@ -70,7 +76,7 @@ def edits2(word):
 
     return (e2 for e1 in edits1(word) for e2 in edits1(e1))
 
-#file_list = file_list[] # to restart job on specific file
+file_list = [file for file in file_list if file not in set(new_file_list)] # to restart job on specific file
 
 print("Beginning correction of",len(file_list),"files...") 
 
