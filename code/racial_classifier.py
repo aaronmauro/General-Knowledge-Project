@@ -127,8 +127,8 @@ additional_racist_terms = additional_racist_terms.split(",")
 racist_terms = set(racist_terms + additional_racist_terms)
 
 national_terms = national_terms[:len(racist_terms)]
-print("Loaded", len(racist_terms), "racist terms")
-print("Loaded", len(national_terms), "national terms")
+#print("Loaded", len(racist_terms), "racist terms")
+#print("Loaded", len(national_terms), "national terms")
 """
 print("Building corpus file name list...")
 file_list = []
@@ -345,7 +345,7 @@ def racial_classifier(file_name, text):
 #                                     #
 #######################################
 
-
+"""
 print("Building training sets...")
 # capture time start
 jobstart = time.time()
@@ -381,7 +381,7 @@ result = pool.map(classifier, file_list)
 jobend = time.time()
 # print time to complete
 print("Time to complete for all files: {0:.2f}".format(jobend - jobstart))
-
+"""
 #######################################
 #                                     #
 #    Interactive Racial Classifier    #

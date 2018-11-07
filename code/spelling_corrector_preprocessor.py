@@ -127,7 +127,7 @@ def processor(file):
 jobstart = time.time()
 
 # begin mutliprocessing
-pool = multiprocessing.Pool(processes=7) #default uses as many cores as available (set at 7 core for typical machine)
+pool = multiprocessing.Pool(processes=4) #default uses as many cores as available (set at 7 core for typical machine)
 # map processor function jobs to processor core pool
 result = pool.map(processor, file_list)
 
