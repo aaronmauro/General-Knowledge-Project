@@ -53,7 +53,7 @@ def racial_classifier_processor(file_name):
     sent_tokens = sent_tokenize(text)
     csv_file = open('../output/classify/results/'+file_name[:-4]+'_classify.csv', 'w', newline='') #'w' write mode
     csv_writer = csv.writer(csv_file, delimiter=',',lineterminator='\n')
-    csv_writer.writerow(['File Name', 'Year','result','score','sentence'])
+    csv_writer.writerow(['file_name', 'year','result','score','sentence'])
     csv_file.close()
     
     csv_file = open('../output/classify/results/'+file_name[:-4]+'_classify.csv', 'a', newline='') # 'a' append mode
@@ -61,33 +61,35 @@ def racial_classifier_processor(file_name):
     sent_group = []
     for sentence in sent_tokens:
         found = 0
-        if len(sent_group) < 7: # calibrate for larger sentence chunks
+        if len(sent_group) < 5: # calibrate for larger sentence chunks
             sent_group.append(sentence)
-            tokens = word_tokenize("".join(sent_group))
+        else:
+            group = "".join(sent_group)
+            tokens = word_tokenize(group)
             for token in tokens:
                 if token in term_set:
                     found += 1
                 else:
                     found += 0
-            if found > 5: # calibrate if too many false positives occuring
-                result = str(racial_classifier("1987_vol.1.txt","".join(sent_group)))
-                csv_writer.writerow([file_name[:-4],file_name[:4],result[2:8],result[11:-1],"".join(sent_group)])
+            if found > 6: # calibrate if too many false positives occuring
+                result = str(racial_classifier("1987_vol.1.txt",group))
+                csv_writer.writerow([file_name[:-4],file_name[:4],result[2:-7],result[-4:-1],group])
                 sent_group = []
             else:
                 result = "('neutral', 0.0)"
-                csv_writer.writerow([file_name[:-4],file_name[:4],result[2:-7],result[11:-1],"".join(sent_group)])
+                csv_writer.writerow([file_name[:-4],file_name[:4],result[2:-7],result[-4:-1],group])
                 sent_group = []
     csv_file.close()
     end = time.time()
     print("Time for job, id", os.getpid(),", to complete: {0:.2f}".format(end - start))
     return
 
-# racial_classifier_processor("1987_vol.1.txt") #for testing
+#racial_classifier_processor("1987_vol.1.txt") #for testing
 
 # capture time start
 jobstart = time.time()
 # begin mutliprocessing
-pool = multiprocessing.Pool(processes=8) #default uses as many cores as available (set at 4 core for typical machine)
+pool = multiprocessing.Pool(processes=7) #default uses as many cores as available (set at 4 core for typical machine)
 # map processor function jobs to processor core pool
 result = pool.map(racial_classifier_processor, file_list)
 # capture close
