@@ -21,5 +21,5 @@ scipy==1.0.0
 selenium==3.11.0
 SQLAlchemy==1.2.1
 statsmodels==0.8.0
-urllib3==1.22
+urllib3==1.26.5
 wcwidth==0.1.7
